@@ -3,15 +3,9 @@
 
 from fastapi import FastAPI
 
-from app.config import config
+from app.api.views import views
+
 
 app = FastAPI()
 
-
-@app.get("/ping")
-async def pong():
-    return {
-        "ping": "pong!",
-        "environment": config.environment,
-        "testing": config.testing,
-    }
+app.include_router(views)
