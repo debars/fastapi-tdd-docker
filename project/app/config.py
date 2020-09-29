@@ -5,15 +5,17 @@ import os
 
 
 class Config:
-    def __init__(self, environment: str, testing: bool):
+    def __init__(self, environment: str, testing: bool, database_url):
         self.environment = environment
         self.testing = testing
+        self.database_url = database_url
 
     @classmethod
     def from_environ(cls):
         return cls(
             os.environ["ENVIRONMENT"],
             os.environ["TESTING"],
+            os.environ["DATABASE_URL"],
         )
 
     def log(self):

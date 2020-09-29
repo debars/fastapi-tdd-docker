@@ -1,2 +1,4 @@
 docker-compose build
 docker-compose up -d
+docker-compose logs web
+docker-compose exec web-db psql -U postgres
