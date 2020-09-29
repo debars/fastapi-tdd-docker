@@ -1,4 +1,4 @@
 #!/bin/bash
 
 source app/.myenv
-uvicorn app.main:app --host 127.0.0.1 --port 8000
+uvicorn app.main:app --workers 1 --host 0.0.0.0 --port 8000
