@@ -1,0 +1,35 @@
+#!/bin/bash
+
+set -x
+
+usage() {
+    echo "Usage: $0 <all|symbols>"
+    echo "     : all: forces recreate of all cscope.files"
+    echo
+    exit
+}
+
+recreate_all() {
+    find app -name '*.py' > cscope.files
+}
+
+recreate_symbols() {
+    rm -f cscope.in.out
+    rm -f cscope.out
+    rm -f cscope.po.out
+    cscope -b -k -q
+}
+
+case $1 in
+    all)
+        recreate_all
+        recreate_symbols
+        ;;
+    symbols)
+        recreate_symbols
+        ;;
+    *)
+        usage
+        ;;
+esac
+
