@@ -3,9 +3,15 @@
 
 from fastapi import FastAPI
 
+from app.config import config
+
 app = FastAPI()
 
 
 @app.get("/ping")
-def pong():
-    return {"ping": "pong!"}
+async def pong():
+    return {
+        "ping": "pong!",
+        "environment": config.environment,
+        "testing": config.testing,
+    }
