@@ -1,4 +1,9 @@
+# https://testdriven.io/courses/tdd-fastapi/postgres-setup/
+# to build the docker container
 docker-compose build
+# to run docker container and detach
 docker-compose up -d
+# to view the logs from web container
 docker-compose logs web
+# to enter psql on database
 docker-compose exec web-db psql -U postgres
