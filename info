@@ -7,3 +7,7 @@ docker-compose up -d
 docker-compose logs web
 # to enter psql on database
 docker-compose exec web-db psql -U postgres
+# to run tests
+docker-compose exec web python -m pytest
+# to generate schema manually
+docker-compose exec web python app/db.py
