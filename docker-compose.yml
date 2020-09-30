@@ -8,6 +8,9 @@ services:
       - ./project:/usr/src/app
     ports:
       - 8002:8000
+    environment:
+      - DATABASE_URL=postgres://postgres:postgres@web-db:5432/web_dev
+      - DATABASE_TEST_URL=postgres://postgres:postgres@web-db:5432/web_test
 
   web-db:
     build:
