@@ -1,10 +1,13 @@
-# project/app/main.py
+# project/app/api/views.py
 
 
+from typing import List
 from fastapi import APIRouter, Depends
+from fastapi import HTTPException
 
 from app.config import get_settings, Settings
 from app.api.models import SummaryPayloadSchema, SummaryResponseSchema
+from app.api.models import SummarySchema
 from app.api import crud
 
 
@@ -20,7 +23,7 @@ async def pong(settings: Settings = Depends(get_settings)):
         "testing": settings.testing,
     }
 
-@views.post("/summaries", tags=["summaries"], response_model=SummaryResponseSchema, status_code=201)
+@views.post("/summaries/", tags=["summaries"], response_model=SummaryResponseSchema, status_code=201)
 async def create_summary(payload: SummaryPayloadSchema) -> SummaryResponseSchema:
     print("create_summary")
     summary_id = await crud.post(payload)
@@ -30,3 +33,16 @@ async def create_summary(payload: SummaryPayloadSchema) -> SummaryResponseSchema
         "url": payload.url
     }
     return response_object
+
+@views.get("/summaries/{id}/", response_model=SummarySchema)
+async def read_summary(id: int) -> SummarySchema:
+    summary = await crud.get(id)
+    if not summary:
+        raise HTTPException(status_code=404, detail="Summary not found")
+
+    return summary
+
+@views.get("/summaries/", response_model=List[SummarySchema])
+async def read_all_summaries() -> List[SummarySchema]:
+    return await crud.get_all()
+
