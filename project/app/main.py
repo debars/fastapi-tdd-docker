@@ -1,21 +1,28 @@
 # project/app/main.py
 
-import os
+import logging
 
 from fastapi import FastAPI
 from tortoise.contrib.fastapi import register_tortoise
 
 from app.api.views import views
+from app.db import init_db
 
 
-app = FastAPI()
+log = logging.getLogger(__name__)
 
-register_tortoise(
-    app,
-    db_url=os.environ.get("DATABASE_URL"),
-    modules={"models": ["app.api.models"]},
-    generate_schemas=True,
-    add_exception_handlers=True,
-)
+def create_application() -> FastAPI:
+    application = FastAPI()
+    application.include_router(views)
+    return application
 
-app.include_router(views)
+app = create_application()
+
+@app.on_event("startup")
+async def startup():
+    log.info("Starting up...")
+    init_db(app)
+
+@app.on_event("shutdown")
+async def shutdown():
+    log.info("Shutting down...")
