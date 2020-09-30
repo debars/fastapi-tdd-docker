@@ -3,6 +3,25 @@
 import logging
 import os
 
+from functools import lru_cache
+
+from pydantic import BaseSettings, AnyUrl
+
+
+log = logging.getLogger(__name__)
+
+
+class Settings(BaseSettings):
+    environment: str = os.getenv("ENVIRONMENT", "dev")
+    testing: bool = os.getenv("TESTING", 0)
+    database_url: AnyUrl = os.environ.get("DATABASE_URL")
+
+
+@lru_cache()
+def get_settings() -> BaseSettings:
+    log.info("Loading config settings from the environment...")
+    return Settings()
+
 
 class Config:
     def __init__(self, environment: str, testing: bool, database_url):
@@ -17,9 +36,6 @@ class Config:
             os.environ["TESTING"],
             os.environ["DATABASE_URL"],
         )
-
-    def log(self):
-        return self.log
 
 
 class Logger():
@@ -45,6 +61,7 @@ class Logger():
         return self._log
 
 
-config = Config.from_environ()
-logger = Logger()
-logger.log.info("Loading config settings from the environment...")
+#config = Config.from_environ()
+#logger = Logger()
+#logger.log.info("Loading config settings from the environment...")
+
