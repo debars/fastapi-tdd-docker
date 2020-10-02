@@ -70,4 +70,18 @@ heroku container:release web
 # apply migrations to db
 heroku run python app/db.py
 
+##
+# end of v1 branch
+# merged to master
+##
 
+##
+# v2 branch
+##
+# add pytest-cov
+# add .coveragerc in project dir
+# rebuild docker
+docker-compose up -d --build
+
+# run tests with coverage
+docker-compose exec web python -m pytest --cov="."
