@@ -42,3 +42,28 @@ docker-compose exec web python -m pytest -l
 
 # list the 2 slowest tests
 docker-compose exec web python -m pytest --durations=2
+
+# heroku
+heroku create
+# heroku app from: heroku create
+radiant-ravine-51567
+
+heroku container:login
+heroku addons:create heroku-postgresql:hobby-dev
+
+# build production image and tag it with the format:
+# registry.heroku.com/<app>/<process-type> (process-type=web)
+docker build -f project/Dockerfile.prod -t registry.heroku.com/radiant-ravine-51567/web ./project
+
+# test locally
+docker run --name fastapi-tdd -e PORT=8765 -e DATABASE_URL=sqlite://sqlite.db -p 5003:8765 registry.heroku.com/salty-fortress-93778/web:latest
+# verify
+# bring down the container
+docker rm fastapi-tdd -f
+
+# push the image to the registry
+docker push registry.heroku.com/radiant-ravine-51567/web:latest
+
+# release the image
+heroku container:release web
+
