@@ -13,6 +13,7 @@ async def get(id: int) -> Union[dict, None]:
         return summary[0]
     return None
 
+
 async def post(payload: SummaryPayloadSchema) -> int:
     summary = TextSummary(
         url=payload.url,
@@ -20,6 +21,7 @@ async def post(payload: SummaryPayloadSchema) -> int:
     )
     await summary.save()
     return summary.id
+
 
 async def get_all() -> List:
     summaries = await TextSummary.all().values()

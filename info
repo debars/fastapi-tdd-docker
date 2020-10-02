@@ -85,3 +85,21 @@ docker-compose up -d --build
 
 # run tests with coverage
 docker-compose exec web python -m pytest --cov="."
+
+# run flake8
+docker-compose exec web flake8 .
+
+# run black
+# check status
+docker-compose exec web black . --check
+# and with diff
+docker-compose exec web black . --diff
+# finally run
+docker-compose exec web black .
+
+# add isort, run check and diff
+docker-compose exec web /bin/sh -c "isort ./**/*.py --check-only"
+docker-compose exec web /bin/sh -c "isort ./**/*.py --diff"
+# Then, apply the changes:
+docker-compose exec web /bin/sh -c "isort ./**/*.py"
+
