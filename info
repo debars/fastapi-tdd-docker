@@ -67,3 +67,7 @@ docker push registry.heroku.com/radiant-ravine-51567/web:latest
 # release the image
 heroku container:release web
 
+# apply migrations to db
+heroku run python app/db.py
+
+
