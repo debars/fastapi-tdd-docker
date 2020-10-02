@@ -103,3 +103,15 @@ docker-compose exec web /bin/sh -c "isort ./**/*.py --diff"
 # Then, apply the changes:
 docker-compose exec web /bin/sh -c "isort ./**/*.py"
 
+##
+# merged v2 into master
+##
+
+# working on github
+docker build -f project/Dockerfile.prod -t docker.pkg.github.com/debars/fastapi-tdd-docker/web:latest ./project
+# authenticate to github packages with docker
+docker login docker.pkg.github.com -u <USERNAME> -p <TOKEN>
+
+# push the image
+docker push docker.pkg.github.com/debars/fastapi-tdd-docker/web:latest
+
